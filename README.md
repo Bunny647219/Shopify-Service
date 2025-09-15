@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Multi-Tenant Shopify Data Ingestion & Insights Service
 
-## Getting Started
+## Overview
+This project is a multi-tenant data ingestion and insights service for Shopify stores. It allows enterprise retailers to onboard their Shopify stores, ingest customer, order, product, and event data, and visualize key business metrics in a dashboard.
 
-First, run the development server:
+## Tech Stack
+- Backend & Frontend: Next.js (React)
+- Database: MySQL with Prisma ORM
+- Authentication: NextAuth (email/password)
+- Charting: Recharts
+- Deployment: Vercel
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Features
+- Multi-tenant architecture with data isolation by tenant
+- Shopify API integration for customers, orders, products, and custom events
+- Webhook handlers for real-time data sync
+- Bulk sync API for initial data ingestion
+- Email/password authentication for tenants
+- Dashboard with total customers, orders, revenue, orders by date, top customers by spend
+- Basic tenant onboarding API with basic auth
+
+## Setup Instructions
+
+### Prerequisites
+- Node.js 18+
+- MySQL database
+- Shopify Partner account and development store
+
+### Environment Variables
+Create a `.env` file in the root with:
+
+```
+DATABASE_URL="mysql://user:password@host:port/dbname"
+BASIC_AUTH_USER="admin"
+BASIC_AUTH_PASS="yourpassword"
+SHOPIFY_WEBHOOK_SECRET="your_webhook_secret"
+NEXTAUTH_SECRET="your_nextauth_secret"
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Install Dependencies
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Prisma Setup
+```bash
+npx prisma migrate dev --name init
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Run Development Server
+```bash
+npm run dev
+```
 
-## Learn More
+### Shopify Setup
+See [SHOPIFY_SETUP.md](./SHOPIFY_SETUP.md) for detailed instructions on creating a Shopify dev store, app, and onboarding tenants.
 
-To learn more about Next.js, take a look at the following resources:
+## API Endpoints
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `POST /api/onboard` - Tenant onboarding (basic auth)
+- `POST /api/sync/[tenantId]` - Trigger bulk sync (basic auth)
+- `POST /api/webhooks/shopify` - Shopify webhook handler
+- `GET /api/dashboard/totals` - Get total customers, orders, revenue (auth required)
+- `GET /api/dashboard/orders` - Get orders by date with optional date range (auth required)
+- `GET /api/dashboard/revenue` - Get revenue by date with optional date range (auth required)
+- `GET /api/dashboard/top-customers` - Get top 5 customers by spend (auth required)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Database Schema
+See `prisma/schema.prisma` for detailed schema with Tenant, User, Customer, Order, Product, Event models.
 
-## Deploy on Vercel
+## Architecture Diagram
+```
+[Shopify Stores] <---> [Shopify Webhooks & API] <---> [Next.js Backend & API] <---> [MySQL Database]
+                                         |
+                                         v
+                                [Dashboard Frontend]
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Next Steps to Productionize
+- Implement OAuth flow for Shopify app installation
+- Add scheduler for periodic sync or webhook registration automation
+- Add more detailed error handling and logging
+- Add unit and integration tests
+- Improve UI/UX and add tenant onboarding UI
+- Secure environment variables and secrets management
+- Add monitoring and alerting
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Known Limitations
+- Basic auth for onboarding and sync APIs (should be improved)
+- No OAuth flow implemented yet
+- Limited error handling and validation
+- No tests included
+
+## License
+MIT
