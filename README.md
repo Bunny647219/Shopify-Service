@@ -7,18 +7,18 @@ This project is a multi-tenant data ingestion and insights service for Shopify s
 Front end site link:https://exact-poet-77042603.figma.site/
 
 Multi-tenant Architecture: Secure data isolation for multiple Shopify stores
-Real-time Analytics: KPIs including total customers, orders, and revenue
-Interactive Charts: Orders over time and top customers by spend
-Advanced Date Filtering: Custom date ranges with smart validation
-Professional UI: Modern, minimalist design with responsive layout
-Performance Optimized: Lazy loading, caching, and memoization
+-Real-time Analytics: KPIs including total customers, orders, and revenue
+-Interactive Charts: Orders over time and top customers by spend
+-Advanced Date Filtering: Custom date ranges with smart validation
+-Professional UI: Modern, minimalist design with responsive layout
+-Performance Optimized: Lazy loading, caching, and memoization
 🛠️ Tech Stack
-Frontend: React 18 + TypeScript + Vite
-Styling: Tailwind CSS v4 + shadcn/ui components
-Charts: Recharts for data visualization
-Authentication: JWT-based with secure session management
-Icons: Lucide React
-Animations: Motion (Framer Motion)
+-Frontend: React 18 + TypeScript + Vite
+-Styling: Tailwind CSS v4 + shadcn/ui components
+-Charts: Recharts for data visualization
+-Authentication: JWT-based with secure session management
+-Icons: Lucide React
+-Animations: Motion (Framer Motion)
 
 ## Features
 - Multi-tenant architecture with data isolation by tenant
